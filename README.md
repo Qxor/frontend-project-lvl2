@@ -33,4 +33,4 @@ Example of usage:
   Section "group2" deleted.
   ```
 
-![](https://cloclo19.datacloudmail.ru/weblink/view/4Mr1/4vxYMW1CQ?etag=A6B54DB01EFA5E13FE85981589D23EB5CB96FDEA&key=80d573bb6d7bba6e3e163d3b5f39b88e4c56a1cd)
+![](https://cloclo5.datacloudmail.ru/weblink/view/2qnq/2mB9UYJqR?etag=031E6A642D0E2D85E4677D8B959AB25A0882FC05&key=5caabe8c5d7f171378367c61d32193ae9acc5bc6)
