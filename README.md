@@ -33,6 +33,4 @@ Example of usage:
   Section "group2" deleted.
   ```
 
---> asciinema
-
-
+![](https://cloclo19.datacloudmail.ru/weblink/view/4Mr1/4vxYMW1CQ?etag=A6B54DB01EFA5E13FE85981589D23EB5CB96FDEA&key=80d573bb6d7bba6e3e163d3b5f39b88e4c56a1cd)
