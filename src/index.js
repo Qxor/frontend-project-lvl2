@@ -19,7 +19,7 @@ export default (first, second) => {
       _.has(before, key) ? acc : [...acc, `+ ${key}: ${after[key]}`]
     ), interim);
 
-  const result = `{\n   ${full.join('\n   ')}\n}`;
+  const result = `{\n  ${full.join('\n  ')}\n}`;
 
   console.log(result);
   return result;
