@@ -1,65 +1,59 @@
 import gendiff from '../src/index';
 import fs from 'fs';
 
-test('compare two flat json files, v.1', () => {
-  const before = `${__dirname}/__fixtures__/0.1.x/test1/before.json`;
-  const after = `${__dirname}/__fixtures__/0.1.x/test1/after.json`;
-  const result = fs.readFileSync(`${__dirname}/__fixtures__/0.1.x/test1/result.txt`, 'utf8');
-  expect(gendiff(before, after)).toBe(result);
-});
+const expectedTest1 = fs.readFileSync(`${__dirname}/__fixtures__/results/test1.txt`, 'utf8');
+test.each([
+    [
+      `${__dirname}/__fixtures__/0.1.x/test1/before.json`, 
+      `${__dirname}/__fixtures__/0.1.x/test1/after.json`
+    ],
+    [
+      `${__dirname}/__fixtures__/0.2.x/test1/before.yml`, 
+      `${__dirname}/__fixtures__/0.2.x/test1/after.yml`
+    ],
+    [
+      `${__dirname}/__fixtures__/0.3.x/test1/before.ini`, 
+      `${__dirname}/__fixtures__/0.3.x/test1/after.ini`
+    ]
+  ])('compare two flat files, v.1', (before, after) => {
+    expect(gendiff(before, after)).toBe(expectedTest1);
+  },
+);
 
-test('compare two flat json files, v.2', () => {
-  const before = `${__dirname}/__fixtures__/0.1.x/test2/before.json`;
-  const after = `${__dirname}/__fixtures__/0.1.x/test2/after.json`;
-  const result = fs.readFileSync(`${__dirname}/__fixtures__/0.1.x/test2/result.txt`, 'utf8');
-  expect(gendiff(before, after)).toBe(result);
-});
+const expectedTest2 = fs.readFileSync(`${__dirname}/__fixtures__/results/test2.txt`, 'utf8');
+test.each([
+    [
+      `${__dirname}/__fixtures__/0.1.x/test2/before.json`, 
+      `${__dirname}/__fixtures__/0.1.x/test2/after.json`
+    ],
+    [
+      `${__dirname}/__fixtures__/0.2.x/test2/before.yml`, 
+      `${__dirname}/__fixtures__/0.2.x/test2/after.yml`
+    ],
+    [
+      `${__dirname}/__fixtures__/0.3.x/test2/before.ini`, 
+      `${__dirname}/__fixtures__/0.3.x/test2/after.ini`
+    ]
+  ])('compare two flat files, v.2', (before, after) => {
+    expect(gendiff(before, after)).toBe(expectedTest2);
+  },
+);
 
-test('compare two flat json files, both are equal', () => {
-  const before = `${__dirname}/__fixtures__/0.1.x/test3/before.json`;
-  const after = `${__dirname}/__fixtures__/0.1.x/test3/after.json`;
-  const result = fs.readFileSync(`${__dirname}/__fixtures__/0.1.x/test3/result.txt`, 'utf8');
-  expect(gendiff(before, after)).toBe(result);
-});
-
-test('compare two flat yaml files, v.1', () => {
-  const before = `${__dirname}/__fixtures__/0.2.x/test1/before.yml`;
-  const after = `${__dirname}/__fixtures__/0.2.x/test1/after.yml`;
-  const result = fs.readFileSync(`${__dirname}/__fixtures__/0.2.x/test1/result.txt`, 'utf8');
-  expect(gendiff(before, after)).toBe(result);
-});
-
-test('compare two flat yaml files, v.2', () => {
-  const before = `${__dirname}/__fixtures__/0.2.x/test2/before.yml`;
-  const after = `${__dirname}/__fixtures__/0.2.x/test2/after.yml`;
-  const result = fs.readFileSync(`${__dirname}/__fixtures__/0.2.x/test2/result.txt`, 'utf8');
-  expect(gendiff(before, after)).toBe(result);
-});
-
-test('compare two flat yaml files, both are equal', () => {
-  const before = `${__dirname}/__fixtures__/0.2.x/test3/before.yml`;
-  const after = `${__dirname}/__fixtures__/0.2.x/test3/after.yml`;
-  const result = fs.readFileSync(`${__dirname}/__fixtures__/0.2.x/test3/result.txt`, 'utf8');
-  expect(gendiff(before, after)).toBe(result);
-});
-
-test('compare two flat yaml files, v.1', () => {
-  const before = `${__dirname}/__fixtures__/0.3.x/test1/before.ini`;
-  const after = `${__dirname}/__fixtures__/0.3.x/test1/after.ini`;
-  const result = fs.readFileSync(`${__dirname}/__fixtures__/0.3.x/test1/result.txt`, 'utf8');
-  expect(gendiff(before, after)).toBe(result);
-});
-
-test('compare two flat yaml files, v.2', () => {
-  const before = `${__dirname}/__fixtures__/0.3.x/test2/before.ini`;
-  const after = `${__dirname}/__fixtures__/0.3.x/test2/after.ini`;
-  const result = fs.readFileSync(`${__dirname}/__fixtures__/0.3.x/test2/result.txt`, 'utf8');
-  expect(gendiff(before, after)).toBe(result);
-});
-
-test('compare two flat yaml files, both are equal', () => {
-  const before = `${__dirname}/__fixtures__/0.3.x/test3/before.ini`;
-  const after = `${__dirname}/__fixtures__/0.3.x/test3/after.ini`;
-  const result = fs.readFileSync(`${__dirname}/__fixtures__/0.3.x/test3/result.txt`, 'utf8');
-  expect(gendiff(before, after)).toBe(result);
-});
+const expectedTest3 = fs.readFileSync(`${__dirname}/__fixtures__/results/test3.txt`, 'utf8');
+test.each([
+    [
+      `${__dirname}/__fixtures__/0.1.x/test3/before.json`, 
+      `${__dirname}/__fixtures__/0.1.x/test3/after.json`
+    ],
+    [
+      `${__dirname}/__fixtures__/0.2.x/test3/before.yml`, 
+      `${__dirname}/__fixtures__/0.2.x/test3/after.yml`
+    ],
+    [
+      `${__dirname}/__fixtures__/0.3.x/test3/before.ini`, 
+      `${__dirname}/__fixtures__/0.3.x/test3/after.ini`
+    ]
+  ])('compare two flat yaml files, both are equal', (before, after) => {
+    expect(gendiff(before, after)).toBe(expectedTest3);
+  },
+);
