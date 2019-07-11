@@ -1,9 +1,10 @@
-import fs from 'fs';
 import _ from 'lodash';
+import parse from './parsers';
+
 
 export default (first, second) => {
-  const before = JSON.parse(fs.readFileSync(first, 'utf8'));
-  const after = JSON.parse(fs.readFileSync(second, 'utf8'));
+  const before = parse(first);
+  const after = parse(second);
 
   const interim = Object.keys(before).reduce((acc, key) => {
     if (_.has(after, key)) {

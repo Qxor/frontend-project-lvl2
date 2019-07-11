@@ -1,6 +1,6 @@
 {
   "name": "gendiff",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "CLI utility to compare text files by content",
   "main": "index.js",
   "bin": {
@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "commander": "^2.20.0",
+    "js-yaml": "^3.13.1",
     "lodash": "^4.17.11"
   }
 }
