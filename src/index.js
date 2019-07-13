@@ -1,7 +1,8 @@
 import parse from './parsers';
 import merge from './merge';
 // import renderJSON from './renders/jsonRender';
-import renderYAML from './renders/yamlRender';
+// import renderYAML from './renders/yamlRender';
+import renderINI from './renders/iniRendrer';
 
 
 export default (first, second) => {
@@ -10,7 +11,7 @@ export default (first, second) => {
 
   const merged = merge(before, after);
 
-  const result = renderYAML(merged);
+  const result = renderINI(merged);
   console.log(result);
   return result;
 };
