@@ -1,6 +1,6 @@
 {
   "name": "gendiff",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "CLI utility to compare text files by content",
   "main": "index.js",
   "bin": {
