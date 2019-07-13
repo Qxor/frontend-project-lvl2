@@ -1,6 +1,15 @@
 import gendiff from '../src/index';
 import fs from 'fs';
 
+const before = `${__dirname}/__fixtures__/before.json`;
+const after = `${__dirname}/__fixtures__/after.json`;
+const expected = JSON.parse(fs.readFileSync(`${__dirname}/__fixtures__/resultOfMerge.json`, 'utf8'));
+
+test('Compare two .json files. Result = AST', () => {
+  expect(gendiff(before, after)).toStrictEqual(expected);
+});
+
+/*
 const expectedTest1 = fs.readFileSync(`${__dirname}/__fixtures__/results/test1.txt`, 'utf8');
 test.each([
     [
@@ -57,3 +66,4 @@ test.each([
     expect(gendiff(before, after)).toBe(expectedTest3);
   },
 );
+*/
