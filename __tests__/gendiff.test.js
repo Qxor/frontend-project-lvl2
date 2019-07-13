@@ -3,7 +3,7 @@ import fs from 'fs';
 
 const before = `${__dirname}/__fixtures__/before.json`;
 const after = `${__dirname}/__fixtures__/after.json`;
-const expected = JSON.parse(fs.readFileSync(`${__dirname}/__fixtures__/resultOfMerge.json`, 'utf8'));
+const expected = fs.readFileSync(`${__dirname}/__fixtures__/result.txt`, 'utf8');
 
 test('Compare two .json files. Result = AST', () => {
   expect(gendiff(before, after)).toStrictEqual(expected);
