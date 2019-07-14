@@ -1,69 +1,32 @@
 import gendiff from '../src/index';
 import fs from 'fs';
+import merge from '../src/merge';
+import parse from '../src/parsers';
 
-const before = `${__dirname}/__fixtures__/before.json`;
-const after = `${__dirname}/__fixtures__/after.json`;
-const expected = fs.readFileSync(`${__dirname}/__fixtures__/result.txt`, 'utf8');
+const beforeJSON = `${__dirname}/__fixtures__/json/before.json`;
+const afterJSON = `${__dirname}/__fixtures__/json/after.json`;
+const expectedJSON = fs.readFileSync(`${__dirname}/__fixtures__/json/result.txt`, 'utf8');
 
-test('Compare two .json files. Result = AST', () => {
-  expect(gendiff(before, after)).toStrictEqual(expected);
+test('Compare two .json files', () => {
+  expect(gendiff(beforeJSON, afterJSON)).toEqual(expectedJSON);
 });
 
-/*
-const expectedTest1 = fs.readFileSync(`${__dirname}/__fixtures__/results/test1.txt`, 'utf8');
-test.each([
-    [
-      `${__dirname}/__fixtures__/0.1.x/test1/before.json`, 
-      `${__dirname}/__fixtures__/0.1.x/test1/after.json`
-    ],
-    [
-      `${__dirname}/__fixtures__/0.2.x/test1/before.yml`, 
-      `${__dirname}/__fixtures__/0.2.x/test1/after.yml`
-    ],
-    [
-      `${__dirname}/__fixtures__/0.3.x/test1/before.ini`, 
-      `${__dirname}/__fixtures__/0.3.x/test1/after.ini`
-    ]
-  ])('compare two flat files, v.1', (before, after) => {
-    expect(gendiff(before, after)).toBe(expectedTest1);
-  },
-);
+const beforeYAML = `${__dirname}/__fixtures__/yaml/before.yml`;
+const afterYAML = `${__dirname}/__fixtures__/yaml/after.yml`;
+const expectedYAML = fs.readFileSync(`${__dirname}/__fixtures__/yaml/result.txt`, 'utf8');
 
-const expectedTest2 = fs.readFileSync(`${__dirname}/__fixtures__/results/test2.txt`, 'utf8');
-test.each([
-    [
-      `${__dirname}/__fixtures__/0.1.x/test2/before.json`, 
-      `${__dirname}/__fixtures__/0.1.x/test2/after.json`
-    ],
-    [
-      `${__dirname}/__fixtures__/0.2.x/test2/before.yml`, 
-      `${__dirname}/__fixtures__/0.2.x/test2/after.yml`
-    ],
-    [
-      `${__dirname}/__fixtures__/0.3.x/test2/before.ini`, 
-      `${__dirname}/__fixtures__/0.3.x/test2/after.ini`
-    ]
-  ])('compare two flat files, v.2', (before, after) => {
-    expect(gendiff(before, after)).toBe(expectedTest2);
-  },
-);
+test('Compare two .yaml files', () => {
+  expect(gendiff(beforeYAML, afterYAML)).toEqual(expectedYAML);
+});
 
-const expectedTest3 = fs.readFileSync(`${__dirname}/__fixtures__/results/test3.txt`, 'utf8');
-test.each([
-    [
-      `${__dirname}/__fixtures__/0.1.x/test3/before.json`, 
-      `${__dirname}/__fixtures__/0.1.x/test3/after.json`
-    ],
-    [
-      `${__dirname}/__fixtures__/0.2.x/test3/before.yml`, 
-      `${__dirname}/__fixtures__/0.2.x/test3/after.yml`
-    ],
-    [
-      `${__dirname}/__fixtures__/0.3.x/test3/before.ini`, 
-      `${__dirname}/__fixtures__/0.3.x/test3/after.ini`
-    ]
-  ])('compare two flat yaml files, both are equal', (before, after) => {
-    expect(gendiff(before, after)).toBe(expectedTest3);
-  },
-);
-*/
+const beforeINI = `${__dirname}/__fixtures__/ini/before.ini`;
+const afterINI = `${__dirname}/__fixtures__/ini/after.ini`;
+const expectedINI = fs.readFileSync(`${__dirname}/__fixtures__/ini/result.txt`, 'utf8');
+const expectedAST = JSON.parse(fs.readFileSync(`${__dirname}/__fixtures__/ast.json`, 'utf8'));
+
+test('Compare two .ini files', () => {
+  expect(gendiff(beforeINI, afterINI)).toEqual(expectedINI);
+});
+test('Compare two .ini files. Result = AST', () => {
+  expect(merge(parse(beforeINI), parse(afterINI))).toEqual(expectedAST);
+});

@@ -1,9 +1,14 @@
+import path from 'path';
 import parse from './parsers';
 import merge from './merge';
-// import renderJSON from './renders/jsonRender';
-// import renderYAML from './renders/yamlRender';
-import renderINI from './renders/iniRendrer';
+import render from './render';
 
+const defineFormatOutput = (file1, file2) => {
+  const format1 = path.extname(file1);
+  const format2 = path.extname(file2);
+
+  return format1 === format2 ? format1 : '.json';
+};
 
 export default (first, second) => {
   const before = parse(first);
@@ -11,7 +16,5 @@ export default (first, second) => {
 
   const merged = merge(before, after);
 
-  const result = renderINI(merged);
-  console.log(result);
-  return result;
+  return render(merged, defineFormatOutput(first, second));
 };
