@@ -10,11 +10,11 @@ const defineFormatOutput = (file1, file2) => {
   return format1 === format2 ? format1 : '.json';
 };
 
-export default (first, second) => {
+export default (first, second, formating) => {
   const before = parse(first);
   const after = parse(second);
 
   const merged = merge(before, after);
 
-  return render(merged, defineFormatOutput(first, second));
+  return render(merged, formating, defineFormatOutput(first, second));
 };

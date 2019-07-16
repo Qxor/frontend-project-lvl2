@@ -1,4 +1,4 @@
-const merge = (before, after) => {
+const merge = (before, after, parent = '') => {
   const mergeKeys = (keys1, keys2) => {
     const common = keys1.concat(keys2);
     return common
@@ -10,17 +10,57 @@ const merge = (before, after) => {
   const keysAfter = Object.keys(after);
 
   return mergeKeys(keysBefore, keysAfter).reduce((acc, key) => {
+    const fullName = parent === ''
+      ? key
+      : `${parent}.${key}`;
+
     if (keysBefore.includes(key) && keysAfter.includes(key)) {
       if (typeof before[key] === 'object' && typeof after[key] === 'object') {
-        return [...acc, { key, state: null, value: merge(before[key], after[key]) }];
+        return [...acc,
+          {
+            key,
+            fullName,
+            state: null,
+            value: merge(before[key], after[key], fullName),
+          }];
       }
       return before[key] === after[key]
-        ? [...acc, { key, state: null, value: before[key] }]
-        : [...acc, { key, state: 'removed', value: before[key] }, { key, state: 'added', value: after[key] }];
+        ? [...acc,
+          {
+            key,
+            fullName,
+            state: null,
+            value: before[key],
+          }]
+        : [...acc,
+          {
+            key,
+            fullName,
+            state: 'removed',
+            value: before[key],
+          },
+          {
+            key,
+            fullName,
+            state: 'added',
+            value: after[key],
+          }];
     }
     return keysBefore.includes(key)
-      ? [...acc, { key, state: 'removed', value: before[key] }]
-      : [...acc, { key, state: 'added', value: after[key] }];
+      ? [...acc,
+        {
+          key,
+          fullName,
+          state: 'removed',
+          value: before[key],
+        }]
+      : [...acc,
+        {
+          key,
+          fullName,
+          state: 'added',
+          value: after[key],
+        }];
   }, []);
 };
 

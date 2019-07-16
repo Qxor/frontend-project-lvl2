@@ -1,14 +1,17 @@
-import renderJSON from './renders/jsonRender';
-import renderYAML from './renders/yamlRender';
-import renderINI from './renders/iniRendrer';
+import * as pretty from './formatters/pretty';
+import plain from './formatters/plain';
 
-export default (data, type) => {
+export default (data, formating, type) => {
+  if (formating === 'plain') {
+    return plain(data);
+  }
+
   switch (type) {
     case '.ini':
-      return renderINI(data);
+      return pretty.INI(data);
     case '.yml':
-      return renderYAML(data);
+      return pretty.YAML(data);
     default:
-      return renderJSON(data);
+      return pretty.JSON(data);
   }
 };
