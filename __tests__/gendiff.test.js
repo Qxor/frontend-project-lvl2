@@ -37,3 +37,9 @@ const expectedPlainText = fs.readFileSync(`${__dirname}/__fixtures__/outputResul
 test('Compare two .ini files. Output = plain text', () => {
   expect(gendiff(beforeINI, afterINI, { format: 'plain' })).toEqual(expectedPlainText);
 });
+
+const expectedJSONText = fs.readFileSync(`${__dirname}/__fixtures__/outputResults/json.txt`, 'utf8');
+
+test('Compare two .ini files. Output = json', () => {
+  expect(gendiff(beforeINI, afterINI, { format: 'json' })).toEqual(expectedJSONText);
+});
