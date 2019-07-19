@@ -1,6 +1,7 @@
-import * as pretty from './formatters/pretty';
+import * as original from './formatters/original';
 import plain from './formatters/plain';
 import json from './formatters/json';
+import pretty from './formatters/pretty';
 
 export default (data, format, type) => {
   if (format === 'plain') {
@@ -11,12 +12,16 @@ export default (data, format, type) => {
     return json(data);
   }
 
+  if (format === 'pretty') {
+    return pretty(data);
+  }
+
   switch (type) {
     case '.ini':
-      return pretty.INI(data);
+      return original.INI(data);
     case '.yml':
-      return pretty.YAML(data);
+      return original.YAML(data);
     default:
-      return pretty.JSON(data);
+      return original.JSON(data);
   }
 };

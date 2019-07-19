@@ -7,7 +7,7 @@ const beforeJSON = `${__dirname}/__fixtures__/json/before.json`;
 const afterJSON = `${__dirname}/__fixtures__/json/after.json`;
 const expectedJSON = fs.readFileSync(`${__dirname}/__fixtures__/outputResults/jsonOriginal.txt`, 'utf8');
 
-test('Compare two .json files', () => {
+test('Compare two .json files. Format = original', () => {
   expect(gendiff(beforeJSON, afterJSON, { format: '' })).toEqual(expectedJSON);
 });
 
@@ -15,7 +15,7 @@ const beforeYAML = `${__dirname}/__fixtures__/yaml/before.yml`;
 const afterYAML = `${__dirname}/__fixtures__/yaml/after.yml`;
 const expectedYAML = fs.readFileSync(`${__dirname}/__fixtures__/outputResults/yamlOriginal.txt`, 'utf8');
 
-test('Compare two .yaml files', () => {
+test('Compare two .yaml files. Format = original', () => {
   expect(gendiff(beforeYAML, afterYAML, { format: '' })).toEqual(expectedYAML);
 });
 
@@ -24,7 +24,7 @@ const afterINI = `${__dirname}/__fixtures__/ini/after.ini`;
 const expectedINI = fs.readFileSync(`${__dirname}/__fixtures__/outputResults/iniOriginal.txt`, 'utf8');
 const expectedAST = JSON.parse(fs.readFileSync(`${__dirname}/__fixtures__/outputResults/ast.json`, 'utf8'));
 
-test('Compare two .ini files', () => {
+test('Compare two .ini files. Format = original', () => {
   expect(gendiff(beforeINI, afterINI, { format: '' })).toEqual(expectedINI);
 });
 test('Compare two .ini files. Result = AST', () => {
@@ -39,6 +39,12 @@ test('Compare two .ini files. Output = plain text', () => {
 });
 
 const expectedJSONText = fs.readFileSync(`${__dirname}/__fixtures__/outputResults/json.txt`, 'utf8');
+
+test('Compare two .ini files. Output = json', () => {
+  expect(gendiff(beforeINI, afterINI, { format: 'json' })).toEqual(expectedJSONText);
+});
+
+const expectedPrettyText = fs.readFileSync(`${__dirname}/__fixtures__/outputResults/pretty.txt`, 'utf8');
 
 test('Compare two .ini files. Output = json', () => {
   expect(gendiff(beforeINI, afterINI, { format: 'json' })).toEqual(expectedJSONText);
