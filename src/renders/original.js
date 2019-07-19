@@ -113,6 +113,7 @@ const renderINI = (data, group = '') => (
 export default (data, type) => {
   switch (type) {
     case 'yml':
+    case 'yaml':
       return yamlRender(data).slice(1);
     case 'ini':
       return renderINI(data).slice(2);

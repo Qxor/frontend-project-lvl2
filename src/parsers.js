@@ -7,6 +7,7 @@ const parsers = {
   json: JSON.parse,
   ini: ini.parse,
   yml: yaml.safeLoad,
+  yaml: yaml.safeLoad,
 };
 
 export const defineParser = (type, func) => {
