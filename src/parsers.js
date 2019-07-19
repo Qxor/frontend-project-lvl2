@@ -3,14 +3,19 @@ import path from 'path';
 import yaml from 'js-yaml';
 import ini from 'ini';
 
-export default (filePath) => {
-  const data = fs.readFileSync(filePath, 'utf8');
+const parsers = {
+  json: JSON.parse,
+  ini: ini.parse,
+  yml: yaml.safeLoad,
+};
 
-  if (path.extname(filePath) === '.json') {
-    return JSON.parse(data);
-  }
-  if (path.extname(filePath) === '.ini') {
-    return ini.parse(data);
-  }
-  return yaml.safeLoad(data);
+export const defineParser = (type, func) => {
+  parsers[type] = func;
+};
+
+export const parse = (filePath) => {
+  const data = fs.readFileSync(filePath, 'utf8');
+  const type = path.extname(filePath).slice(1);
+
+  return parsers[type](data);
 };

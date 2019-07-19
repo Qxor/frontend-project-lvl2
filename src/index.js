@@ -1,16 +1,16 @@
 import path from 'path';
-import parse from './parsers';
+import { parse, defineParser } from './parsers';
 import merge from './merge';
-import render from './render';
+import { render, defineRender } from './renders';
 
 const defineFormatOutput = (file1, file2) => {
-  const format1 = path.extname(file1);
-  const format2 = path.extname(file2);
+  const format1 = path.extname(file1).slice(1);
+  const format2 = path.extname(file2).slice(1);
 
-  return format1 === format2 ? format1 : '.json';
+  return format1 === format2 ? format1 : 'json';
 };
 
-export default (first, second, { format }) => {
+const diff = (first, second, { format }) => {
   const before = parse(first);
   const after = parse(second);
 
@@ -19,4 +19,11 @@ export default (first, second, { format }) => {
 
   console.log(rendered);
   return rendered;
+};
+
+export default {
+  diff,
+  parse,
+  defineParser,
+  defineRender,
 };

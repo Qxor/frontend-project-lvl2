@@ -110,7 +110,13 @@ const renderINI = (data, group = '') => (
     }, '')
 );
 
-
-export const JSON = data => `{${renderJSON(data)}\n}`;
-export const YAML = data => yamlRender(data).slice(1);
-export const INI = data => renderINI(data).slice(2);
+export default (data, type) => {
+  switch (type) {
+    case 'yml':
+      return yamlRender(data).slice(1);
+    case 'ini':
+      return renderINI(data).slice(2);
+    default:
+      return `{${renderJSON(data)}\n}`;
+  }
+};
