@@ -34,3 +34,31 @@ Example of usage:
   ```
 
 ![](https://cloclo5.datacloudmail.ru/weblink/view/2qnq/2mB9UYJqR?etag=031E6A642D0E2D85E4677D8B959AB25A0882FC05&key=5caabe8c5d7f171378367c61d32193ae9acc5bc6)
+
+## API
+**diff (pathFile1, pathFile2, { format })**
+```
+import gendiff from 'gendiff'
+
+const result = gendiff.diff(`~/Documents/before.json`, `~/Documents/after.json`, { format: 'pretty' });
+```
+
+**defineParser (type, func)**
+```
+import gendiff from 'gendiff'
+import parseINI from 'ini'
+
+gendiff.defineParser('ini', parseINI);
+
+const result = gendiff.diff(`~/Documents/before.ini`, `~/Documents/after.ini`, { format: 'pretty' });
+```
+
+**defineRender (name, func)**
+```
+import gendiff from 'gendiff'
+import renderTable from 'render'
+
+gendiff.defineParser('table', renderTable);
+
+const result = gendiff.diff(`~/Documents/before.json`, `~/Documents/after.json`, { format: 'table' });
+```
