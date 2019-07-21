@@ -5,6 +5,6 @@ Property 'common.setting4' was added with value: [blah blah]
 Property 'common.setting5' was added with value: { key5: value5 }
 Property 'common.setting6.ops' was added with value: 'vops'
 Property 'group1.baz' was updated. From 'bas' to 'bars'
-Property 'group1.nest' was updated. From { key: value } to 'str'
+Property 'group1.nest' was updated. From { key: value, key2: value2, key3: [object Object] } to 'str'
 Property 'group2' was removed
 Property 'group3' was added with value: { fee: 100500 }

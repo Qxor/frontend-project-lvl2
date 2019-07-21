@@ -1,43 +1,34 @@
-// @OUTPUT
-// ------------------------------------------------------------
-// Property 'timeout' was updated. From 50 to 20 - if was removed && added
-// Property 'proxy' was removed - if was only removed
-// Property 'common.setting4' was removed - if option has parents
-// Property 'common.setting2' was added with value: 200 - if was only added
-// Property 'group2' was added with value: [complex value]- if value is object or string with spaces
-//
-// Property name = if option has parents
-// Property state = if was removed && added, if was only removed, if was only added
-// Property value = if value is object or string with spaces
+const getPropertyValue = (property) => {
+  const { value } = property;
 
-const getPropertyValue = (obj) => {
-  if (typeof obj.value !== 'object') {
-    if (typeof obj.value === 'string' && obj.value.includes(' ')) {
-      return `[${obj.value}]`;
+  if (typeof value !== 'object') {
+    if (typeof value === 'string' && value.includes(' ')) {
+      return `[${value}]`;
     }
-    if (typeof obj.value === 'string') {
-      return `'${obj.value}'`;
+    if (typeof value === 'string') {
+      return `'${value}'`;
     }
-    return `${obj.value}`;
+    return `${value}`;
   }
 
-  const result = Object.keys(obj.value).reduce((acc, key) => {
-    if (typeof obj[key] !== 'object') {
-      return obj.value instanceof String && obj.value.includes(' ')
-        ? acc.concat(` ${key}: [${obj.value[key]}],`)
-        : acc.concat(` ${key}: ${obj.value[key]},`);
+  const result = Object.keys(value).reduce((acc, key) => {
+    if (typeof property[key] !== 'object') {
+      return value instanceof String && value.includes(' ')
+        ? acc.concat(` ${key}: [${value[key]}],`)
+        : acc.concat(` ${key}: ${value[key]},`);
     }
-    return acc.concat(getPropertyValue(obj[key]));
+    return acc.concat(getPropertyValue(property[key]));
   }, '');
 
   return `{ ${result.slice(1, -1)} }`;
 };
 
-const getPropertyState = (property, arrOfObjects) => {
-  const doubles = arrOfObjects.filter(obj => obj.key === property.key);
+const getPropertyState = (property, ast) => {
+  const { key, state } = property;
+  const doubles = ast.filter(p => p.key === key);
 
   if (doubles.length > 1) {
-    if (property.state !== 'removed') {
+    if (state !== 'removed') {
       return '';
     }
 
@@ -46,23 +37,25 @@ const getPropertyState = (property, arrOfObjects) => {
     return `updated. From ${getPropertyValue(property)} to ${getPropertyValue(propertyDouble)}`;
   }
 
-  return property.state === 'added'
+  return state === 'added'
     ? `added with value: ${getPropertyValue(property)}`
     : 'removed';
 };
 
-const plain = data => data.reduce((acc, rec) => {
-  if (rec.value instanceof Array) {
-    return acc.concat(plain(rec.value));
+const plain = ast => ast.reduce((acc, property) => {
+  const { fullName, value, state } = property;
+
+  if (value instanceof Array) {
+    return acc.concat(plain(value));
   }
 
-  if (rec.state === null) {
+  if (state === null) {
     return acc;
   }
 
-  return getPropertyState(rec, data) === ''
+  return getPropertyState(property, ast) === ''
     ? acc
-    : acc.concat(`Property '${rec.fullName}' was ${getPropertyState(rec, data)}\n`);
+    : acc.concat(`Property '${fullName}' was ${getPropertyState(property, ast)}\n`);
 }, '');
 
-export default data => plain(data).trim();
+export default ast => plain(ast).trim();

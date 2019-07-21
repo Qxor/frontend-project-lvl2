@@ -1,39 +1,48 @@
-const getStateView = (state) => {
-  let str;
+export const getStateView = (state) => {
   switch (state) {
     case 'added':
-      str = '+';
-      break;
+      return '+';
     case 'removed':
-      str = '-';
-      break;
+      return '-';
     default:
-      str = ' ';
+      return ' ';
   }
-
-  return str;
 };
 
-const stringifyJSON = (obj, spacesCount) => {
-  const space = ' '.repeat(spacesCount);
-  return Object.keys(obj).reduce((acc, key) => acc.concat(`${space}${key}: ${obj[key]}`), '');
+const stringifyObject = (obj, spaces) => {
+  const tab = ' '.repeat(spaces);
+  const braceTab = ' '.repeat(spaces - 4);
+
+  const result = Object.keys(obj)
+    .reduce((acc, key) => {
+      const value = obj[key];
+
+      return typeof value === 'object'
+        ? acc.concat(`\n${tab}${key}: ${stringifyObject(value, spaces + 4)}`)
+        : acc.concat(`\n${tab}${key}: ${value}`);
+    }, '');
+
+  return `{${result}\n${braceTab}}`;
 };
 
-const renderJSON = (data, spacesCount = 2) => {
-  const space = ' '.repeat(spacesCount);
+const renderPretty = (ast, spaces = 2) => {
+  const tab = ' '.repeat(spaces);
+  const braceTab = ' '.repeat(spaces - 2);
 
-  const result = data.reduce((acc, obj) => {
-    const state = getStateView(obj.state);
+  const result = ast.reduce((acc, property) => {
+    const { key, value, state } = property;
 
-    if (obj.value instanceof Array) {
-      return acc.concat(`\n${space}${state} ${obj.key}: {${renderJSON(obj.value, spacesCount + 4)}\n${space}  }`);
+    if (value instanceof Array) {
+      return acc.concat(`\n${tab}${getStateView(state)} ${key}: ${renderPretty(value, spaces + 4)}`);
     }
-    return typeof obj.value === 'object'
-      ? acc.concat(`\n${space}${state} ${obj.key}: {\n${stringifyJSON(obj.value, spacesCount + 6)}\n${space}  }`)
-      : acc.concat(`\n${space}${state} ${obj.key}: ${obj.value}`);
+    if (typeof value === 'object') {
+      return acc.concat(`\n${tab}${getStateView(state)} ${key}: ${stringifyObject(value, spaces + 6)}`);
+    }
+
+    return acc.concat(`\n${tab}${getStateView(state)} ${key}: ${value}`);
   }, '');
 
-  return result;
+  return `{${result}\n${braceTab}}`;
 };
 
-export default data => `{${renderJSON(data)}\n}`;
+export default ast => renderPretty(ast);

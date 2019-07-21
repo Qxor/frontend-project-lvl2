@@ -11,7 +11,11 @@
     "baz": "bas",
     "foo": "bar",
     "nest": {
-      "key": "value"
+      "key": "value",
+      "key2": "value2",
+      "key3": {
+        "subKey": "subValue"
+      }
     }
   },
   "group2": {

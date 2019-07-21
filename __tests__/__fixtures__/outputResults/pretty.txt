@@ -22,6 +22,10 @@
         foo: bar
       - nest: {
             key: value
+            key2: value2
+            key3: {
+                subKey: subValue
+            }
         }
       + nest: str
     }

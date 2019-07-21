@@ -99,7 +99,11 @@
         "fullName": "group1.nest",
         "state": "removed",
         "value": {
-          "key": "value"
+          "key": "value",
+          "key2": "value2",
+          "key3": {
+            "subKey": "subValue"
+          }
         }
       },
       {
