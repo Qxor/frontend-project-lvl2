@@ -1,4 +1,4 @@
-export const getStateView = (state) => {
+const getStateView = (state) => {
   switch (state) {
     case 'added':
       return '+';

@@ -13,33 +13,35 @@ const beforeINI = `${__dirname}/__fixtures__/ini/before.ini`;
 const afterINI = `${__dirname}/__fixtures__/ini/after.ini`;
 
 const expectedAST = JSON.parse(fs.readFileSync(`${__dirname}/__fixtures__/outputResults/ast.json`, 'utf8'));
+const expectedPrettyText = fs.readFileSync(`${__dirname}/__fixtures__/outputResults/pretty.txt`, 'utf8');
+const expectedPlainText = fs.readFileSync(`${__dirname}/__fixtures__/outputResults/plain.txt`, 'utf8');
+const expectedJSONText = fs.readFileSync(`${__dirname}/__fixtures__/outputResults/json.txt`, 'utf8');
 
 test('Compare two .json files. Result = AST', () => {
   expect(merge(parse(beforeJSON), parse(afterJSON))).toEqual(expectedAST);
 });
 
-const expectedPrettyText = fs.readFileSync(`${__dirname}/__fixtures__/outputResults/pretty.txt`, 'utf8');
 
-test('Compare two .json files. Output = pretty', () => {
-  expect(gendiff.diff(beforeJSON, afterJSON, { format: 'pretty' })).toEqual(expectedPrettyText);
-});
+test.each([
+  [beforeJSON, afterJSON],
+  [beforeYAML, afterYAML],
+  [beforeINI, afterINI]
+])('Output = pretty\nFiles:\n> %s\n> %s\n---\n', (before, after) => (
+  expect(gendiff.diff(before, after, { format: 'pretty' })).toEqual(expectedPrettyText)
+));
 
-test('Compare two .yml files. Output = pretty', () => {
-  expect(gendiff.diff(beforeYAML, afterYAML, { format: 'pretty' })).toEqual(expectedPrettyText);
-});
+test.each([
+  [beforeJSON, afterJSON],
+  [beforeYAML, afterYAML],
+  [beforeINI, afterINI]
+])('Output = plain\nFiles:\n> %s\n> %s\n---\n', (before, after) => (
+  expect(gendiff.diff(before, after, { format: 'plain' })).toEqual(expectedPlainText)
+));
 
-test('Compare two .ini files. Output = pretty', () => {
-  expect(gendiff.diff(beforeINI, afterINI, { format: 'pretty' })).toEqual(expectedPrettyText);
-});
-
-const expectedPlainText = fs.readFileSync(`${__dirname}/__fixtures__/outputResults/plain.txt`, 'utf8');
-
-test('Compare two .json files. Output = plain text', () => {
-  expect(gendiff.diff(beforeJSON, afterJSON, { format: 'plain' })).toEqual(expectedPlainText);
-});
-
-const expectedJSONText = fs.readFileSync(`${__dirname}/__fixtures__/outputResults/json.txt`, 'utf8');
-
-test('Compare two .json files. Output = json', () => {
-  expect(gendiff.diff(beforeJSON, afterJSON, { format: 'json' })).toEqual(expectedJSONText);
-});
+test.each([
+  [beforeJSON, afterJSON],
+  [beforeYAML, afterYAML],
+  [beforeINI, afterINI]
+])('Output = json\nFiles:\n> %s\n> %s\n---\n', (before, after) => (
+  expect(gendiff.diff(before, after, { format: 'json' })).toEqual(expectedJSONText)
+));
