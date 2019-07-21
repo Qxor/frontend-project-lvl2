@@ -33,7 +33,7 @@ Example of usage:
   Section "group2" deleted.
   ```
 
-![](https://cloclo5.datacloudmail.ru/weblink/view/2qnq/2mB9UYJqR?etag=031E6A642D0E2D85E4677D8B959AB25A0882FC05&key=5caabe8c5d7f171378367c61d32193ae9acc5bc6)
+![](https://cloclo21.datacloudmail.ru/weblink/view/FBC4/3QA5k3XeU?etag=FBAA6AEEF87E7CED74B14E6B88F142C3E48BA74D&key=212123d36eceba1e1a10e7eff2529b45e85a3201)
 
 ## API
 **diff (pathFile1, pathFile2, { format })**
