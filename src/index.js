@@ -1,5 +1,5 @@
 import { parse, defineParser } from './parsers';
-import merge from './merge';
+import merge from './ast';
 import { render, defineRender } from './renders';
 
 const diff = (first, second, { format }) => {

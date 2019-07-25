@@ -1,70 +1,57 @@
 [
   {
-    "key": "common",
-    "fullName": "common",
-    "state": null,
+    "name": "common",
+    "type": "nested",
     "value": [
       {
-        "key": "follow",
-        "fullName": "common.follow",
-        "state": "added",
+        "name": "follow",
+        "type": "added",
         "value": false
       },
       {
-        "key": "setting1",
-        "fullName": "common.setting1",
-        "state": null,
+        "name": "setting1",
+        "type": "unchanged",
         "value": "Value 1"
       },
       {
-        "key": "setting2",
-        "fullName": "common.setting2",
-        "state": "removed",
+        "name": "setting2",
+        "type": "removed",
         "value": "200"
       },
       {
-        "key": "setting3",
-        "fullName": "common.setting3",
-        "state": "removed",
-        "value": true
-      },
-      {
-        "key": "setting3",
-        "fullName": "common.setting3",
-        "state": "added",
+        "name": "setting3",
+        "type": "updated",
         "value": {
-          "key": "value"
+          "old": true,
+          "new": {
+            "key": "value"
+          }
         }
       },
       {
-        "key": "setting4",
-        "fullName": "common.setting4",
-        "state": "added",
+        "name": "setting4",
+        "type": "added",
         "value": "blah blah"
       },
       {
-        "key": "setting5",
-        "fullName": "common.setting5",
-        "state": "added",
+        "name": "setting5",
+        "type": "added",
         "value": {
           "key5": "value5"
         }
       },
       {
-        "key": "setting6",
-        "fullName": "common.setting6",
-        "state": null,
+        "name": "setting6",
+        "type": "nested",
         "value": [
           {
-            "key": "key",
-            "fullName": "common.setting6.key",
-            "state": null,
+            "name": "key",
+            "type": "unchanged",
             "value": "value"
           },
           {
-            "key": "ops",
-            "fullName": "common.setting6.ops",
-            "state": "added",
+            "name": "ops",
+            "type": "added",
             "value": "vops"
           }
         ]
@@ -72,60 +59,48 @@
     ]
   },
   {
-    "key": "group1",
-    "fullName": "group1",
-    "state": null,
+    "name": "group1",
+    "type": "nested",
     "value": [
       {
-        "key": "baz",
-        "fullName": "group1.baz",
-        "state": "removed",
-        "value": "bas"
-      },
-      {
-        "key": "baz",
-        "fullName": "group1.baz",
-        "state": "added",
-        "value": "bars"
-      },
-      {
-        "key": "foo",
-        "fullName": "group1.foo",
-        "state": null,
-        "value": "bar"
-      },
-      {
-        "key": "nest",
-        "fullName": "group1.nest",
-        "state": "removed",
+        "name": "baz",
+        "type": "updated",
         "value": {
-          "key": "value",
-          "key2": "value2",
-          "key3": {
-            "subKey": "subValue"
-          }
+          "old": "bas",
+          "new": "bars"
         }
       },
       {
-        "key": "nest",
-        "fullName": "group1.nest",
-        "state": "added",
-        "value": "str"
+        "name": "foo",
+        "type": "unchanged",
+        "value": "bar"
+      },
+      {
+        "name": "nest",
+        "type": "updated",
+        "value": {
+          "old": {
+            "key": "value",
+            "key2": "value2",
+            "key3": {
+                "subKey": "subValue"
+            }
+          },
+          "new": "str"
+        }
       }
     ]
   },
   {
-    "key": "group2",
-    "fullName": "group2",
-    "state": "removed",
+    "name": "group2",
+    "type": "removed",
     "value": {
       "abc": "12345"
     }
   },
   {
-    "key": "group3",
-    "fullName": "group3",
-    "state": "added",
+    "name": "group3",
+    "type": "added",
     "value": {
       "fee": "100500"
     }
