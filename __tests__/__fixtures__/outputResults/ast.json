@@ -16,7 +16,7 @@
       {
         "name": "setting2",
         "type": "removed",
-        "value": "200"
+        "value": 200
       },
       {
         "name": "setting3",
@@ -95,14 +95,14 @@
     "name": "group2",
     "type": "removed",
     "value": {
-      "abc": "12345"
+      "abc": 12345
     }
   },
   {
     "name": "group3",
     "type": "added",
     "value": {
-      "fee": "100500"
+      "fee": 100500
     }
   }
 ]

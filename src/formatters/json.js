@@ -16,12 +16,9 @@ const renderJSON = ast => (
   ast.reduce((acc, property) => {
     const {
       key,
-      fullName,
       state,
       value,
     } = property;
-
-    const stateString = state === null ? `${state}` : `"${state}"`;
 
     let valueString;
     if (value instanceof Array) {
@@ -32,7 +29,7 @@ const renderJSON = ast => (
       valueString = typeof value === 'boolean' ? `${value}` : `"${value}"`;
     }
 
-    return acc.concat(`{"key":"${key}","fullName":"${fullName}","state":${stateString},"value":${valueString}},`);
+    return acc.concat(`{"key":"${key}","state":${state},"value":${valueString}},`);
   }, '')
 );
 

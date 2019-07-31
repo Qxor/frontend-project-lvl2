@@ -1,6 +1,6 @@
-import plain from './renders/plain';
-import json from './renders/json';
-import pretty from './renders/pretty';
+import plain from './formatters/plain';
+import json from './formatters/json';
+import pretty from './formatters/pretty';
 
 const renders = {
   pretty,
