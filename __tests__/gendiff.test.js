@@ -15,7 +15,7 @@ const afterINI = `${__dirname}/__fixtures__/ini/after.ini`;
 
 const expectedAST = JSON.parse(fs.readFileSync(`${__dirname}/__fixtures__/outputResults/ast.json`, 'utf8'));
 const expectedPrettyText = fs.readFileSync(`${__dirname}/__fixtures__/outputResults/pretty.txt`, 'utf8');
-// const expectedPlainText = fs.readFileSync(`${__dirname}/__fixtures__/outputResults/plain.txt`, 'utf8');
+const expectedPlainText = fs.readFileSync(`${__dirname}/__fixtures__/outputResults/plain.txt`, 'utf8');
 // const expectedJSONText = fs.readFileSync(`${__dirname}/__fixtures__/outputResults/json.txt`, 'utf8');
 
 test.each([
@@ -35,15 +35,15 @@ test.each([
   expect(diff(before, after, { format: 'pretty' })).toEqual(expectedPrettyText)
 ));
 
-/*
 test.each([
   [beforeJSON, afterJSON],
   [beforeYAML, afterYAML],
   [beforeINI, afterINI]
 ])('Output = plain\nFiles:\n> %s\n> %s\n---\n', (before, after) => (
-  expect(gendiff.diff(before, after, { format: 'plain' })).toEqual(expectedPlainText)
+  expect(diff(before, after, { format: 'plain' })).toEqual(expectedPlainText)
 ));
 
+/*
 test.each([
   [beforeJSON, afterJSON],
   [beforeYAML, afterYAML],

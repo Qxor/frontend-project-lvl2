@@ -1,61 +1,65 @@
-const getPropertyValue = (property) => {
-  const { value } = property;
+import _ from 'lodash';
 
-  if (typeof value !== 'object') {
-    if (typeof value === 'string' && value.includes(' ')) {
-      return `[${value}]`;
-    }
-    if (typeof value === 'string') {
-      return `'${value}'`;
-    }
-    return `${value}`;
-  }
+const valueRenders = [
+  {
+    check: value => typeof value === 'string' && value.includes(' '),
+    render: value => `[${value}]`,
+  },
+  {
+    check: value => typeof value === 'string',
+    render: value => `'${value}'`,
+  },
+  {
+    check: value => typeof value !== 'string' && typeof value !== 'object',
+    render: value => `${value}`,
+  },
+  {
+    check: value => typeof value === 'object',
+    render: () => '[complex value]',
+  },
+];
 
-  const result = Object.keys(value).reduce((acc, key) => {
-    if (typeof property[key] !== 'object') {
-      return value instanceof String && value.includes(' ')
-        ? acc.concat(` ${key}: [${value[key]}],`)
-        : acc.concat(` ${key}: ${value[key]},`);
-    }
-    return acc.concat(getPropertyValue(property[key]));
-  }, '');
+const renderName = (name, parent) => (parent ? `${parent}.${name}` : name);
 
-  return `{ ${result.slice(1, -1)} }`;
+const renderValue = (value) => {
+  const { render } = _.find(valueRenders, item => item.check(value));
+  return render(value);
 };
 
-const getPropertyState = (property, ast) => {
-  const { key, state } = property;
-  const doubles = ast.filter(p => p.key === key);
+const nodesRenders = [
+  {
+    type: 'added',
+    render: (name, parent, value) => `Property '${renderName(name, parent)}' was added with value: ${renderValue(value)}`,
+  },
+  {
+    type: 'removed',
+    render: (name, parent) => `Property '${renderName(name, parent)}' was removed`,
+  },
+  {
+    type: 'updated',
+    render: (name, parent, value) => `Property '${renderName(name, parent)}' was updated. From ${renderValue(value.old)} to ${renderValue(value.new)}`,
+  },
+  {
+    type: 'unchanged',
+    render: () => null,
+  },
+  {
+    type: 'nested',
+    render: (name, parent, value, fn) => fn(value, renderName(name, parent)),
+  },
+];
 
-  if (doubles.length > 1) {
-    if (state !== 'removed') {
-      return '';
-    }
+const renderPlain = (ast, parent = '') => {
+  const result = ast.reduce((acc, node) => {
+    const { name, type, value } = node;
+    const { render } = _.find(nodesRenders, item => item.type === type);
 
-    const [, propertyDouble] = doubles;
+    const rendered = render(name, parent, value, renderPlain);
 
-    return `updated. From ${getPropertyValue(property)} to ${getPropertyValue(propertyDouble)}`;
-  }
+    return rendered ? [...acc, rendered] : acc;
+  }, []);
 
-  return state === 'added'
-    ? `added with value: ${getPropertyValue(property)}`
-    : 'removed';
+  return result.join('\n');
 };
 
-const plain = ast => ast.reduce((acc, property) => {
-  const { fullName, value, state } = property;
-
-  if (value instanceof Array) {
-    return acc.concat(plain(value));
-  }
-
-  if (state === null) {
-    return acc;
-  }
-
-  return getPropertyState(property, ast) === ''
-    ? acc
-    : acc.concat(`Property '${fullName}' was ${getPropertyState(property, ast)}\n`);
-}, '');
-
-export default ast => plain(ast).trim();
+export default ast => renderPlain(ast);
