@@ -36,7 +36,7 @@ Example of usage:
 ![](https://cloclo22.datacloudmail.ru/weblink/view/3xvM/5mNaNmD6Z?etag=3EAA89AE00B708BDF981B494D4FCE155B0D94490&key=f2652e2462a549aa2d436281761adf20f31c0836)
 
 ## API
-**diff (pathFile1, pathFile2, { format })**
+**diff (pathFile1, pathFile2, formatter)**
 ```
 import gendiff from 'gendiff'
 
