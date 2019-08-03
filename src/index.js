@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { parse, defineParser } from './parser';
 import buildAST from './ast';
-import { render, defineRender } from './render';
+import { render, defineFormatter } from './render';
 
 export const readConfigs = (firstConfigPath, secondConfigPath) => (
   {
@@ -38,5 +38,5 @@ const diff = (firstConfigPath, secondConfigPath, formatter) => {
 export {
   diff,
   defineParser,
-  defineRender,
+  defineFormatter,
 };

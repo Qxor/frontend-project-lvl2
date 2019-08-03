@@ -1,14 +1,14 @@
 import plain from './formatters/plain';
 import pretty from './formatters/pretty';
 
-const renders = {
+const formatters = {
   pretty,
   plain,
   json: JSON.stringify,
 };
 
-export const defineRender = (name, func) => {
-  renders[name] = func;
+export const defineFormatter = (name, func) => {
+  formatters[name] = func;
 };
 
-export const render = (ast, format) => renders[format](ast);
+export const render = (ast, format) => formatters[format](ast);

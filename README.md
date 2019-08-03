@@ -53,12 +53,12 @@ gendiff.defineParser('ini', parseINI);
 const result = gendiff.diff('~/Documents/before.ini', '~/Documents/after.ini', 'plain');
 ```
 
-**defineRender (name, func)**
+**defineFormatter (name, func)**
 ```
 import gendiff from 'gendiff'
-import renderTable from 'render'
+import table from './formatters/table'
 
-gendiff.defineParser('table', renderTable);
+gendiff.defineFormatter('table', table);
 
 const result = gendiff.diff('~/Documents/before.json', '~/Documents/after.json', 'table');
 ```
