@@ -50,3 +50,13 @@ test.each([
 ])('Output = json\nFiles:\n> %s\n> %s\n---\n', (before, after) => (
   expect(diff(before, after, { format: 'json' })).toEqual(expectedJSONText)
 ));
+
+test.each([
+  [beforeJSON, afterJSON],
+  [beforeYAML, afterYAML],
+  [beforeINI, afterINI]
+])('Output = json\nFiles:\n> %s\n> %s\n---\n', (before, after) => (
+  expect(diff(before, after, 'json')).toEqual(expectedJSONText)
+));
+
+

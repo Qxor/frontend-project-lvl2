@@ -33,14 +33,14 @@ Example of usage:
   Section "group2" deleted.
   ```
 
-![](https://cloclo21.datacloudmail.ru/weblink/view/FBC4/3QA5k3XeU?etag=FBAA6AEEF87E7CED74B14E6B88F142C3E48BA74D&key=212123d36eceba1e1a10e7eff2529b45e85a3201)
+![](https://cloclo22.datacloudmail.ru/weblink/view/3xvM/5mNaNmD6Z?etag=3EAA89AE00B708BDF981B494D4FCE155B0D94490&key=f2652e2462a549aa2d436281761adf20f31c0836)
 
 ## API
 **diff (pathFile1, pathFile2, { format })**
 ```
 import gendiff from 'gendiff'
 
-const result = gendiff.diff(`~/Documents/before.json`, `~/Documents/after.json`, { format: 'pretty' });
+const result = gendiff.diff('~/Documents/before.json', '~/Documents/after.json', 'pretty');
 ```
 
 **defineParser (type, func)**
@@ -50,7 +50,7 @@ import parseINI from 'ini'
 
 gendiff.defineParser('ini', parseINI);
 
-const result = gendiff.diff(`~/Documents/before.ini`, `~/Documents/after.ini`, { format: 'pretty' });
+const result = gendiff.diff('~/Documents/before.ini', '~/Documents/after.ini', 'plain');
 ```
 
 **defineRender (name, func)**
@@ -60,5 +60,5 @@ import renderTable from 'render'
 
 gendiff.defineParser('table', renderTable);
 
-const result = gendiff.diff(`~/Documents/before.json`, `~/Documents/after.json`, { format: 'table' });
+const result = gendiff.diff('~/Documents/before.json', '~/Documents/after.json', 'table');
 ```

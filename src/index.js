@@ -18,7 +18,9 @@ export const getFilesTypes = (firstConfigPath, secondConfigPath) => (
   }
 );
 
-const diff = (firstConfigPath, secondConfigPath, { format }) => {
+const diff = (firstConfigPath, secondConfigPath, formatter) => {
+  const format = typeof formatter === 'object' ? formatter.format : formatter;
+
   const { first, second } = readConfigs(firstConfigPath, secondConfigPath);
   const { firstType, secondType } = getFilesTypes(firstConfigPath, secondConfigPath);
 
