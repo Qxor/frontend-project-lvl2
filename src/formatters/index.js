@@ -1,5 +1,5 @@
-import plain from './formatters/plain';
-import pretty from './formatters/pretty';
+import plain from './plain';
+import pretty from './pretty';
 
 const formatters = {
   pretty,

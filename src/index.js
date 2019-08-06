@@ -1,31 +1,23 @@
 import fs from 'fs';
 import path from 'path';
-import { parse, defineParser } from './parser';
+import { parse, defineParser } from './parsers';
 import buildAST from './ast';
-import { render, defineFormatter } from './render';
+import { render, defineFormatter } from './formatters';
 
-export const readConfigs = (firstConfigPath, secondConfigPath) => (
+export const readFile = filePath => (
   {
-    first: fs.readFileSync(firstConfigPath, 'utf8'),
-    second: fs.readFileSync(secondConfigPath, 'utf8'),
-  }
-);
-
-export const getFilesTypes = (firstConfigPath, secondConfigPath) => (
-  {
-    firstType: path.extname(firstConfigPath).slice(1),
-    secondType: path.extname(secondConfigPath).slice(1),
-  }
-);
+    body: fs.readFileSync(filePath, 'utf8'),
+    type: path.extname(filePath).slice(1),
+  });
 
 const diff = (firstConfigPath, secondConfigPath, formatter) => {
   const format = typeof formatter === 'object' ? formatter.format : formatter;
 
-  const { first, second } = readConfigs(firstConfigPath, secondConfigPath);
-  const { firstType, secondType } = getFilesTypes(firstConfigPath, secondConfigPath);
+  const first = readFile(firstConfigPath);
+  const second = readFile(secondConfigPath);
 
-  const firstJSON = parse(first, firstType);
-  const secondJSON = parse(second, secondType);
+  const firstJSON = parse(first.body, first.type);
+  const secondJSON = parse(second.body, second.type);
 
   const diffAST = buildAST(firstJSON, secondJSON);
 

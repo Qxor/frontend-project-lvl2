@@ -1,62 +1,70 @@
-import { diff } from '../src/index';
+/* eslint no-undef: 0 */
+
 import fs from 'fs';
 import buildAST from '../src/ast';
-import { parse } from '../src/parser';
-import { getFilesTypes, readConfigs } from '../src/index';
+import { parse } from '../src/parsers';
+import { diff, readFile } from '../src/index';
 
-const beforeJSON = `${__dirname}/__fixtures__/json/before.json`;
-const afterJSON = `${__dirname}/__fixtures__/json/after.json`;
+const getJSONFilesPaths = () => (
+  [
+    `${__dirname}/__fixtures__/json/before.json`,
+    `${__dirname}/__fixtures__/json/after.json`,
+  ]);
 
-const beforeYAML = `${__dirname}/__fixtures__/yaml/before.yml`;
-const afterYAML = `${__dirname}/__fixtures__/yaml/after.yml`;
+const getYAMLFilesPaths = () => (
+  [
+    `${__dirname}/__fixtures__/yaml/before.yml`,
+    `${__dirname}/__fixtures__/yaml/after.yml`,
+  ]);
 
-const beforeINI = `${__dirname}/__fixtures__/ini/before.ini`;
-const afterINI = `${__dirname}/__fixtures__/ini/after.ini`;
+const getINIFilesPaths = () => (
+  [
+    `${__dirname}/__fixtures__/ini/before.ini`,
+    `${__dirname}/__fixtures__/ini/after.ini`,
+  ]);
 
-const expectedAST = JSON.parse(fs.readFileSync(`${__dirname}/__fixtures__/outputResults/ast.json`, 'utf8'));
-const expectedPrettyText = fs.readFileSync(`${__dirname}/__fixtures__/outputResults/pretty.txt`, 'utf8');
-const expectedPlainText = fs.readFileSync(`${__dirname}/__fixtures__/outputResults/plain.txt`, 'utf8');
-const expectedJSONText = fs.readFileSync(`${__dirname}/__fixtures__/outputResults/json.txt`, 'utf8');
+const getExpectedAST = () => JSON.parse(fs.readFileSync(`${__dirname}/__fixtures__/outputResults/ast.json`, 'utf8'));
+const getExpectedPrettyText = () => fs.readFileSync(`${__dirname}/__fixtures__/outputResults/pretty.txt`, 'utf8');
+const getExpectedPlainText = () => fs.readFileSync(`${__dirname}/__fixtures__/outputResults/plain.txt`, 'utf8');
+const getExpectedJSONText = () => fs.readFileSync(`${__dirname}/__fixtures__/outputResults/json.txt`, 'utf8');
 
 test.each([
-  [beforeJSON, afterJSON],
-  [beforeYAML, afterYAML],
-  [beforeINI, afterINI]
+  getJSONFilesPaths(),
+  getYAMLFilesPaths(),
+  getINIFilesPaths(),
 ])('Output = AST\nFiles:\n> %s\n> %s\n---\n', (before, after) => (
-  expect(buildAST(parse(readConfigs(before, after).first, getFilesTypes(before, after).firstType),
-    parse(readConfigs(before, after).second, getFilesTypes(before, after).secondType))).toEqual(expectedAST)
+  expect(buildAST(parse(readFile(before).body, readFile(before).type),
+    parse(readFile(after).body, readFile(after).type))).toEqual(getExpectedAST())
 ));
 
 test.each([
-  [beforeJSON, afterJSON],
-  [beforeYAML, afterYAML],
-  [beforeINI, afterINI]
+  getJSONFilesPaths(),
+  getYAMLFilesPaths(),
+  getINIFilesPaths(),
 ])('Output = pretty\nFiles:\n> %s\n> %s\n---\n', (before, after) => (
-  expect(diff(before, after, { format: 'pretty' })).toEqual(expectedPrettyText)
+  expect(diff(before, after, 'pretty')).toEqual(getExpectedPrettyText())
 ));
 
 test.each([
-  [beforeJSON, afterJSON],
-  [beforeYAML, afterYAML],
-  [beforeINI, afterINI]
+  getJSONFilesPaths(),
+  getYAMLFilesPaths(),
+  getINIFilesPaths(),
 ])('Output = plain\nFiles:\n> %s\n> %s\n---\n', (before, after) => (
-  expect(diff(before, after, { format: 'plain' })).toEqual(expectedPlainText)
+  expect(diff(before, after, 'plain')).toEqual(getExpectedPlainText())
 ));
 
 test.each([
-  [beforeJSON, afterJSON],
-  [beforeYAML, afterYAML],
-  [beforeINI, afterINI]
+  getJSONFilesPaths(),
+  getYAMLFilesPaths(),
+  getINIFilesPaths(),
 ])('Output = json\nFiles:\n> %s\n> %s\n---\n', (before, after) => (
-  expect(diff(before, after, { format: 'json' })).toEqual(expectedJSONText)
+  expect(diff(before, after, 'json')).toEqual(getExpectedJSONText())
 ));
 
 test.each([
-  [beforeJSON, afterJSON],
-  [beforeYAML, afterYAML],
-  [beforeINI, afterINI]
-])('Output = json\nFiles:\n> %s\n> %s\n---\n', (before, after) => (
-  expect(diff(before, after, 'json')).toEqual(expectedJSONText)
+  getJSONFilesPaths(),
+  getYAMLFilesPaths(),
+  getINIFilesPaths(),
+])('Format = Object. Output = json\nFiles:\n> %s\n> %s\n---\n', (before, after) => (
+  expect(diff(before, after, { format: 'json' })).toEqual(getExpectedJSONText())
 ));
-
-
