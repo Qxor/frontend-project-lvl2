@@ -7,8 +7,4 @@ const formatters = {
   json: JSON.stringify,
 };
 
-export const defineFormatter = (name, func) => {
-  formatters[name] = func;
-};
-
-export const render = (ast, format) => formatters[format](ast);
+export default (data, format) => formatters[format](data);

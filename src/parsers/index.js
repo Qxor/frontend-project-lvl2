@@ -8,8 +8,4 @@ const parsers = {
   yaml: yaml.safeLoad,
 };
 
-export const defineParser = (type, func) => {
-  parsers[type] = func;
-};
-
-export const parse = (data, type) => parsers[type](data);
+export default (data, type) => parsers[type](data);

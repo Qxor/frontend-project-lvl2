@@ -1,9 +1,9 @@
 /* eslint no-undef: 0 */
 
 import fs from 'fs';
-import buildAST from '../src/ast';
-import { parse } from '../src/parsers';
-import { diff, readFile } from '../src/index';
+import buildConfigsDiff from '../src/ast';
+import parseConfigToJSON from '../src/parsers';
+import gendiff, { readConfig } from '../src/index';
 
 const getJSONFilesPaths = () => (
   [
@@ -33,8 +33,8 @@ test.each([
   getYAMLFilesPaths(),
   getINIFilesPaths(),
 ])('Output = AST\nFiles:\n> %s\n> %s\n---\n', (before, after) => (
-  expect(buildAST(parse(readFile(before).body, readFile(before).type),
-    parse(readFile(after).body, readFile(after).type))).toEqual(getExpectedAST())
+  expect(buildConfigsDiff(parseConfigToJSON(readConfig(before).body, readConfig(before).type),
+    parseConfigToJSON(readConfig(after).body, readConfig(after).type))).toEqual(getExpectedAST())
 ));
 
 test.each([
@@ -42,7 +42,7 @@ test.each([
   getYAMLFilesPaths(),
   getINIFilesPaths(),
 ])('Output = pretty\nFiles:\n> %s\n> %s\n---\n', (before, after) => (
-  expect(diff(before, after, 'pretty')).toEqual(getExpectedPrettyText())
+  expect(gendiff(before, after, 'pretty')).toEqual(getExpectedPrettyText())
 ));
 
 test.each([
@@ -50,7 +50,7 @@ test.each([
   getYAMLFilesPaths(),
   getINIFilesPaths(),
 ])('Output = plain\nFiles:\n> %s\n> %s\n---\n', (before, after) => (
-  expect(diff(before, after, 'plain')).toEqual(getExpectedPlainText())
+  expect(gendiff(before, after, 'plain')).toEqual(getExpectedPlainText())
 ));
 
 test.each([
@@ -58,7 +58,7 @@ test.each([
   getYAMLFilesPaths(),
   getINIFilesPaths(),
 ])('Output = json\nFiles:\n> %s\n> %s\n---\n', (before, after) => (
-  expect(diff(before, after, 'json')).toEqual(getExpectedJSONText())
+  expect(gendiff(before, after, 'json')).toEqual(getExpectedJSONText())
 ));
 
 test.each([
@@ -66,5 +66,5 @@ test.each([
   getYAMLFilesPaths(),
   getINIFilesPaths(),
 ])('Format = Object. Output = json\nFiles:\n> %s\n> %s\n---\n', (before, after) => (
-  expect(diff(before, after, { format: 'json' })).toEqual(getExpectedJSONText())
+  expect(gendiff(before, after, { format: 'json' })).toEqual(getExpectedJSONText())
 ));

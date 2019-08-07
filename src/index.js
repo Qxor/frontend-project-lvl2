@@ -1,34 +1,30 @@
 import fs from 'fs';
 import path from 'path';
-import { parse, defineParser } from './parsers';
-import buildAST from './ast';
-import { render, defineFormatter } from './formatters';
+import parseConfigToJSON from './parsers';
+import buildConfigsDiff from './ast';
+import parseToString from './formatters';
 
-export const readFile = filePath => (
+export const readConfig = configPath => (
   {
-    body: fs.readFileSync(filePath, 'utf8'),
-    type: path.extname(filePath).slice(1),
+    body: fs.readFileSync(configPath, 'utf8'),
+    type: path.extname(configPath).slice(1),
   });
 
-const diff = (firstConfigPath, secondConfigPath, formatter) => {
+const gendiff = (firstConfigPath, secondConfigPath, formatter) => {
   const format = typeof formatter === 'object' ? formatter.format : formatter;
 
-  const first = readFile(firstConfigPath);
-  const second = readFile(secondConfigPath);
+  const first = readConfig(firstConfigPath);
+  const second = readConfig(secondConfigPath);
 
-  const firstJSON = parse(first.body, first.type);
-  const secondJSON = parse(second.body, second.type);
+  const firstJSON = parseConfigToJSON(first.body, first.type);
+  const secondJSON = parseConfigToJSON(second.body, second.type);
 
-  const diffAST = buildAST(firstJSON, secondJSON);
+  const configsDiff = buildConfigsDiff(firstJSON, secondJSON);
 
-  const rendered = render(diffAST, format);
+  const configsDiffString = parseToString(configsDiff, format);
 
-  console.log(rendered);
-  return rendered;
+  console.log(configsDiffString);
+  return configsDiffString;
 };
 
-export {
-  diff,
-  defineParser,
-  defineFormatter,
-};
+export default gendiff;
