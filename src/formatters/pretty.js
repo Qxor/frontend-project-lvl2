@@ -9,11 +9,11 @@ const stringifyObject = (obj, spaces = 4) => {
       const value = obj[key];
 
       return typeof value === 'object'
-        ? acc.concat(`\n${tab}${key}: ${stringifyObject(value, spaces + 4)}`)
-        : acc.concat(`\n${tab}${key}: ${value}`);
+        ? [...acc, `${tab}${key}: ${stringifyObject(value, spaces + 4)}`]
+        : [...acc, `${tab}${key}: ${value}`];
     }, '');
 
-  return `{${result}\n${braceTab}}`;
+  return _.flatten(['{', result, `${braceTab}}`]).join('\n');
 };
 
 const renderValue = (value, spaces) => (typeof value === 'object' ? stringifyObject(value, spaces + 6) : value);
