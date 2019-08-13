@@ -1,7 +1,8 @@
 import fs from 'fs';
+import path from 'path';
 import gendiff from '../src';
 
-const formats = ['pretty', 'plain', 'json'];
+const formatters = ['pretty', 'plain', 'json'];
 
 const getFilesPaths = dataType => (
   [
@@ -10,14 +11,20 @@ const getFilesPaths = dataType => (
   ]
 );
 
-const getExpectedText = format => fs.readFileSync(`${__dirname}/__fixtures__/outputResults/${format}.txt`, 'utf8');
+const getExpectedText = formatter => fs.readFileSync(`${__dirname}/__fixtures__/outputResults/${formatter}.txt`, 'utf8');
 
-formats.forEach(format => (
+formatters.forEach(formatter => (
   test.each([
     getFilesPaths('json'),
     getFilesPaths('yml'),
     getFilesPaths('ini'),
-  ])(`Output = ${format}\nFiles:\n> %s\n> %s\n---\n`, (before, after) => (
-    expect(gendiff(before, after, format)).toEqual(getExpectedText(format))
-  ))
+  ])(`Output = ${formatter}\nFiles:\n> %s\n> %s\n---\n`, (firstFilePath, secondFilePath) => {
+    const firstFileContent = fs.readFileSync(firstFilePath, 'utf8');
+    const secondFileContent = fs.readFileSync(secondFilePath, 'utf8');
+
+    const contentFormat = path.extname(firstFilePath).slice(1);
+
+    expect(gendiff(firstFileContent, secondFileContent, contentFormat, formatter))
+      .toEqual(getExpectedText(formatter));
+  })
 ));

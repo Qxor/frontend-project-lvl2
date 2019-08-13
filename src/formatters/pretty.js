@@ -19,39 +19,24 @@ const stringifyObject = (obj, spaces = 4) => {
 const renderValue = (value, spaces) => (typeof value === 'object' ? stringifyObject(value, spaces + 6) : value);
 const renderTab = spaces => ' '.repeat(spaces);
 
-const nodesRenders = [
-  {
-    type: 'added',
-    render: (name, value, spaces) => `${renderTab(spaces)}+ ${name}: ${renderValue(value, spaces)}`,
-  },
-  {
-    type: 'removed',
-    render: (name, value, spaces) => `${renderTab(spaces)}- ${name}: ${renderValue(value, spaces)}`,
-  },
-  {
-    type: 'updated',
-    render: (name, value, spaces) => `${renderTab(spaces)}- ${name}: ${renderValue(value.old, spaces)}\n${renderTab(spaces)}+ ${name}: ${renderValue(value.new, spaces)}`,
-  },
-  {
-    type: 'unchanged',
-    render: (name, value, spaces) => `${renderTab(spaces)}  ${name}: ${renderValue(value, spaces)}`,
-  },
-  {
-    type: 'nested',
-    render: (name, value, spaces, fn) => `${renderTab(spaces)}  ${name}: ${fn(value, spaces + 4)}`,
-  },
-];
+const nodesRenders = {
+  added: (name, value, spaces) => `${renderTab(spaces)}+ ${name}: ${renderValue(value, spaces)}`,
+  removed: (name, value, spaces) => `${renderTab(spaces)}- ${name}: ${renderValue(value, spaces)}`,
+  updated: (name, value, spaces) => [`${renderTab(spaces)}- ${name}: ${renderValue(value.old, spaces)}`, `${renderTab(spaces)}+ ${name}: ${renderValue(value.new, spaces)}`],
+  unchanged: (name, value, spaces) => `${renderTab(spaces)}  ${name}: ${renderValue(value, spaces)}`,
+  nested: (name, value, spaces, fn) => `${renderTab(spaces)}  ${name}: ${fn(value, spaces + 4)}`,
+};
 
 const renderPretty = (ast, spaces = 2) => {
   const braceTab = ' '.repeat(spaces - 2);
 
   const result = ast.reduce((acc, node) => {
     const { name, type, value } = node;
-    const { render } = _.find(nodesRenders, item => item.type === type);
+    const render = nodesRenders[type];
     return [...acc, render(name, value, spaces, renderPretty)];
   }, []);
 
-  return `{\n${result.join('\n')}\n${braceTab}}`;
+  return _.flattenDeep(['{', result, `${braceTab}}`]).join('\n');
 };
 
 export default ast => renderPretty(ast);
