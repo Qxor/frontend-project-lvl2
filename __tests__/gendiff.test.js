@@ -1,5 +1,4 @@
 import fs from 'fs';
-import path from 'path';
 import gendiff from '../src';
 
 const formatters = ['pretty', 'plain', 'json'];
@@ -19,12 +18,7 @@ formatters.forEach(formatter => (
     getFilesPaths('yml'),
     getFilesPaths('ini'),
   ])(`Output = ${formatter}\nFiles:\n> %s\n> %s\n---\n`, (firstFilePath, secondFilePath) => {
-    const firstFileContent = fs.readFileSync(firstFilePath, 'utf8');
-    const secondFileContent = fs.readFileSync(secondFilePath, 'utf8');
-
-    const contentFormat = path.extname(firstFilePath).slice(1);
-
-    expect(gendiff(firstFileContent, secondFileContent, contentFormat, formatter))
+    expect(gendiff(firstFilePath, secondFilePath, formatter))
       .toEqual(getExpectedText(formatter));
   })
 ));
