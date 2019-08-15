@@ -11,7 +11,7 @@ const keyTypes = [
     type: 'unchanged',
     check: (first, second, key) => (_.has(first, key) && _.has(second, key)
       && (first[key] === second[key])),
-    process: first => _.identity(first),
+    process: first => first,
   },
   {
     type: 'updated',
@@ -22,12 +22,12 @@ const keyTypes = [
   {
     type: 'removed',
     check: (first, second, key) => (_.has(first, key) && !_.has(second, key)),
-    process: first => _.identity(first),
+    process: first => first,
   },
   {
     type: 'added',
     check: (first, second, key) => (!_.has(first, key) && _.has(second, key)),
-    process: (first, second) => _.identity(second),
+    process: (first, second) => second,
   },
 ];
 
@@ -36,7 +36,7 @@ const buildAST = (firstConfig = {}, secondConfig = {}) => {
   return configsKeys.map((key) => {
     const { type, process } = _.find(keyTypes, item => item.check(firstConfig, secondConfig, key));
     const value = process(firstConfig[key], secondConfig[key], buildAST);
-    return { name: key, type, value };
+    return type === 'nested' ? { name: key, type, children: value } : { name: key, type, value };
   });
 };
 

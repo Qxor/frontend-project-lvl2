@@ -19,7 +19,7 @@ const valueRenders = [
   },
 ];
 
-const renderName = (name, parent) => (parent ? `${parent}.${name}` : name);
+const renderName = (name, ancestry) => (ancestry ? `${ancestry}.${name}` : name);
 
 const renderValue = (value) => {
   const { render } = _.find(valueRenders, item => item.check(value));
@@ -27,19 +27,26 @@ const renderValue = (value) => {
 };
 
 const nodesRenders = {
-  added: (name, parent, value) => `Property '${renderName(name, parent)}' was added with value: ${renderValue(value)}`,
-  removed: (name, parent) => `Property '${renderName(name, parent)}' was removed`,
-  updated: (name, parent, value) => `Property '${renderName(name, parent)}' was updated. From ${renderValue(value.old)} to ${renderValue(value.new)}`,
+  added: (name, ancestry, value) => `Property '${renderName(name, ancestry)}' was added with value: ${renderValue(value)}`,
+  removed: (name, ancestry) => `Property '${renderName(name, ancestry)}' was removed`,
+  updated: (name, ancestry, value) => `Property '${renderName(name, ancestry)}' was updated. From ${renderValue(value.old)} to ${renderValue(value.new)}`,
   unchanged: () => null,
-  nested: (name, parent, value, fn) => fn(value, renderName(name, parent)),
+  nested: (name, ancestry, value, fn) => fn(value, renderName(name, ancestry)),
 };
 
-const renderPlain = (ast, parent = '') => {
+const renderPlain = (ast, ancestry = '') => {
   const result = ast.reduce((acc, node) => {
-    const { name, type, value } = node;
-    const render = nodesRenders[type];
+    const {
+      name,
+      type,
+      children,
+      value,
+    } = node;
 
-    const rendered = render(name, parent, value, renderPlain);
+    const render = nodesRenders[type];
+    const rendered = type === 'nested'
+      ? render(name, ancestry, children, renderPlain)
+      : render(name, ancestry, value);
 
     return rendered ? [...acc, rendered] : acc;
   }, []);

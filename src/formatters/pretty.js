@@ -24,17 +24,25 @@ const nodesRenders = {
   removed: (name, value, spaces) => `${renderTab(spaces)}- ${name}: ${renderValue(value, spaces)}`,
   updated: (name, value, spaces) => [`${renderTab(spaces)}- ${name}: ${renderValue(value.old, spaces)}`, `${renderTab(spaces)}+ ${name}: ${renderValue(value.new, spaces)}`],
   unchanged: (name, value, spaces) => `${renderTab(spaces)}  ${name}: ${renderValue(value, spaces)}`,
-  nested: (name, value, spaces, fn) => `${renderTab(spaces)}  ${name}: ${fn(value, spaces + 4)}`,
+  nested: (name, children, spaces, fn) => `${renderTab(spaces)}  ${name}: ${fn(children, spaces + 4)}`,
 };
 
 const renderPretty = (ast, spaces = 2) => {
   const braceTab = ' '.repeat(spaces - 2);
 
-  const result = ast.reduce((acc, node) => {
-    const { name, type, value } = node;
+  const result = ast.map((node) => {
+    const {
+      name,
+      type,
+      children,
+      value,
+    } = node;
+
     const render = nodesRenders[type];
-    return [...acc, render(name, value, spaces, renderPretty)];
-  }, []);
+    return type === 'nested'
+      ? render(name, children, spaces, renderPretty)
+      : render(name, value, spaces);
+  });
 
   return _.flattenDeep(['{', result, `${braceTab}}`]).join('\n');
 };
