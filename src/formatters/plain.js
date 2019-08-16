@@ -44,9 +44,7 @@ const renderPlain = (ast, ancestry = '') => {
     } = node;
 
     const render = nodesRenders[type];
-    const rendered = type === 'nested'
-      ? render(name, ancestry, children, renderPlain)
-      : render(name, ancestry, value);
+    const rendered = render(name, ancestry, children || value, renderPlain);
 
     return rendered ? [...acc, rendered] : acc;
   }, []);
