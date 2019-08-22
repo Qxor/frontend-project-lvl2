@@ -22,7 +22,7 @@ const renderTab = spaces => ' '.repeat(spaces);
 const nodesRenders = {
   added: ({ name, value }, spaces) => `${renderTab(spaces)}+ ${name}: ${renderValue(value, spaces)}`,
   removed: ({ name, value }, spaces) => `${renderTab(spaces)}- ${name}: ${renderValue(value, spaces)}`,
-  updated: ({ name, value }, spaces) => [`${renderTab(spaces)}- ${name}: ${renderValue(value.old, spaces)}`, `${renderTab(spaces)}+ ${name}: ${renderValue(value.new, spaces)}`],
+  updated: ({ name, oldValue, newValue }, spaces) => [`${renderTab(spaces)}- ${name}: ${renderValue(oldValue, spaces)}`, `${renderTab(spaces)}+ ${name}: ${renderValue(newValue, spaces)}`],
   unchanged: ({ name, value }, spaces) => `${renderTab(spaces)}  ${name}: ${renderValue(value, spaces)}`,
   nested: ({ name, children }, spaces, fn) => `${renderTab(spaces)}  ${name}: ${fn(children, spaces + 4)}`,
 };

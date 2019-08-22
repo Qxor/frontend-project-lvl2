@@ -27,24 +27,19 @@ const renderValue = (value) => {
 };
 
 const nodesRenders = {
-  added: (name, ancestry, value) => `Property '${renderName(name, ancestry)}' was added with value: ${renderValue(value)}`,
-  removed: (name, ancestry) => `Property '${renderName(name, ancestry)}' was removed`,
-  updated: (name, ancestry, value) => `Property '${renderName(name, ancestry)}' was updated. From ${renderValue(value.old)} to ${renderValue(value.new)}`,
+  added: ({ name, value }, ancestry) => `Property '${renderName(name, ancestry)}' was added with value: ${renderValue(value)}`,
+  removed: ({ name }, ancestry) => `Property '${renderName(name, ancestry)}' was removed`,
+  updated: ({ name, oldValue, newValue }, ancestry) => `Property '${renderName(name, ancestry)}' was updated. From ${renderValue(oldValue)} to ${renderValue(newValue)}`,
   unchanged: () => null,
-  nested: (name, ancestry, value, fn) => fn(value, renderName(name, ancestry)),
+  nested: ({ name, children }, ancestry, fn) => fn(children, renderName(name, ancestry)),
 };
 
 const renderPlain = (ast, ancestry = '') => {
   const result = ast.reduce((acc, node) => {
-    const {
-      name,
-      type,
-      children,
-      value,
-    } = node;
+    const { type } = node;
 
     const render = nodesRenders[type];
-    const rendered = render(name, ancestry, children || value, renderPlain);
+    const rendered = render(node, ancestry, renderPlain);
 
     return rendered ? [...acc, rendered] : acc;
   }, []);
