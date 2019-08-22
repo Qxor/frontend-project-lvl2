@@ -5,13 +5,13 @@ const stringifyObject = (obj, spaces = 4) => {
   const braceTab = ' '.repeat(spaces - 4);
 
   const result = Object.keys(obj)
-    .reduce((acc, key) => {
+    .map((key) => {
       const value = obj[key];
 
       return typeof value === 'object'
-        ? [...acc, `${tab}${key}: ${stringifyObject(value, spaces + 4)}`]
-        : [...acc, `${tab}${key}: ${value}`];
-    }, '');
+        ? `${tab}${key}: ${stringifyObject(value, spaces + 4)}`
+        : `${tab}${key}: ${value}`;
+    });
 
   return _.flatten(['{', result, `${braceTab}}`]).join('\n');
 };

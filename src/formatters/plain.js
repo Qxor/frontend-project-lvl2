@@ -37,7 +37,6 @@ const nodesRenders = {
 const renderPlain = (ast, ancestry = '') => {
   const result = ast.reduce((acc, node) => {
     const { type } = node;
-
     const render = nodesRenders[type];
     const rendered = render(node, ancestry, renderPlain);
 
