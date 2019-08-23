@@ -35,15 +35,14 @@ const nodesRenders = {
 };
 
 const renderPlain = (ast, ancestry = '') => {
-  const result = ast.reduce((acc, node) => {
+  const result = ast.map((node) => {
     const { type } = node;
     const render = nodesRenders[type];
-    const rendered = render(node, ancestry, renderPlain);
 
-    return rendered ? [...acc, rendered] : acc;
-  }, []);
+    return render(node, ancestry, renderPlain);
+  });
 
-  return result.join('\n');
+  return _.compact(result).join('\n');
 };
 
 export default ast => renderPlain(ast);
