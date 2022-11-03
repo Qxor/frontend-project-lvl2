@@ -24,7 +24,7 @@
   "license": "ISC",
   "homepage": "https://github.com/Qxor/frontend-project-lvl2#readme",
   "devDependencies": {
-    "@babel/cli": "^7.4.4",
+    "@babel/cli": "^7.19.3",
     "@babel/core": "^7.4.5",
     "@babel/node": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
